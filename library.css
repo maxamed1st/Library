@@ -1,0 +1,14 @@
+main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+#books {
+    grid-column: 1;
+    display: flex;
+    flex-flow: column nowrap;
+}
+#newBook {
+    grid-column: 2;
+    display: flex;
+    flex-flow: column nowrap;
+}
