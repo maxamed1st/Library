@@ -37,15 +37,22 @@ form.submit.addEventListener("click", (e)=> {
     getFromLibrary();
     e.preventDefault();
 })
+//get last item with class books
+const newBook = function() {
+    book = document.createElement("div");
+    book.setAttribute("class", "book");
+    books.appendChild(book);
+    return book;
+}
 //create new element and add to books
-const newElement = function(tagname, content) {
+const newElement = function(book, tagname, content) {
     let element = document.createElement(`${tagname}`);
     element.textContent = content;
-    books.appendChild(element);
-    return books;
+    book.appendChild(element);
+    return book;
 }
 //create checkbox for readingstate
-const readCheckBox = function(readState) {
+const readCheckBox = function(book, readState) {
     let div = document.createElement("div");
     let input = document.createElement("input");
     div.innerText = "Read";
@@ -54,7 +61,7 @@ const readCheckBox = function(readState) {
         input.checked = true;
     }
     div.appendChild(input);
-    books.appendChild(div);
+    book.appendChild(div);
 }
 //Get books from library
 const getFromLibrary = function() {
@@ -68,10 +75,11 @@ const getFromLibrary = function() {
             //get bookobject info
             [title, author, pages, readState] = bookObject.info();
             //display books
-            newElement("div", title);
-            newElement("div", author);
-            newElement("div", pages);
-            readCheckBox(readState);
+            book = newBook();
+            newElement(book, "div", title);
+            newElement(book, "div", author);
+            newElement(book, "div", pages);
+            readCheckBox(book, readState);
         })
     }   
 }
