@@ -39,7 +39,7 @@ form.submit.addEventListener("click", (e)=> {
 })
 //get last item with class books
 const newBook = function() {
-    book = document.createElement("div");
+    let book = document.createElement("div");
     book.setAttribute("class", "book");
     books.appendChild(book);
     return book;
@@ -63,19 +63,35 @@ const readCheckBox = function(book, readState) {
     div.appendChild(input);
     book.appendChild(div);
 }
+//delete from library
+const deleteBtn = function(index) {
+    let btn = document.createElement("button");
+    btn.setAttribute("id", index);
+    btn.textContent = "X";
+    btn.addEventListener("click", () => {
+        library.splice(btn.id, 1);
+        getFromLibrary();
+        console.log(library);
+    })
+    books.appendChild(btn);
+}
 //Get books from library
 const getFromLibrary = function() {
+    //Empty books container
+    while (books.firstChild) {
+        books.removeChild(books.lastChild);
+    }
     if (library.length === 0) {
+        let div = document.createElement("div");
+        div.textContent = "There is no books to show";
+        books.appendChild(div);
     } else {
-        //Make sure screen is empty of books
-        while (books.firstChild) {
-            books.removeChild(books.lastChild);
-        }
-        library.forEach((bookObject) => {
+        library.forEach((bookObject, index) => {
             //get bookobject info
             [title, author, pages, readState] = bookObject.info();
             //display books
             book = newBook();
+            deleteBtn(index);
             newElement(book, "div", title);
             newElement(book, "div", author);
             newElement(book, "div", pages);
