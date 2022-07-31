@@ -1,11 +1,46 @@
+root {
+    box-sizing: border-box;
+}
+*, *::before, *::after {
+    box-sizing: inherit;
+}
 main {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    height: 100vh;
 }
 #books {
     grid-column: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+}
+.book {
     display: flex;
     flex-flow: column nowrap;
+    padding: 25px;
+    background-color: rgb(255, 170, 0);
+    line-height: 35px;
+    height: 150px;
+    font-size: 24px;
+}
+.book button {
+    width: min-content;
+    height: min-content;
+    position: relative;
+    right: 25px;
+    bottom: 25px;
+    background-color: red;
+}
+.book div {
+    width: 100%;
+}
+.book input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    position: relative;
+    left: 65px;
 }
 #newBook {
     grid-column: 2;
