@@ -82,7 +82,7 @@ const getFromLibrary = function() {
         books.removeChild(books.lastChild);
     }
     if (library.length === 0) {
-        newElement(books, "div", "The is no books to show");
+        newElement(books, "div", "There is no books to show");
     } else {
         library.forEach((bookObject, index) => {
             //get bookobject info
