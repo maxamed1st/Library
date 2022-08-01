@@ -81,7 +81,6 @@ const deleteBtn = function(book, index) {
     btn.addEventListener("click", () => {
         library.splice(btn.id, 1);
         getFromLibrary();
-        console.log(library);
     })
     book.appendChild(btn);
 }
@@ -108,7 +107,6 @@ const getFromLibrary = function() {
     }   
 }
 const toggleBookBg = function(book, checked) {
-    console.log(checked, book);
     if(checked) {
         book.style.backgroundColor = "rgb(214, 214, 214)";
     } else {
