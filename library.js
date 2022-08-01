@@ -103,6 +103,7 @@ const getFromLibrary = function() {
             newElement(book, "div", "by "+author);
             newElement(book, "div", pages+" pages");
             readCheckBox(book, readState, index);
+            toggleBookBg(book, readState);
         })
     }   
 }
