@@ -64,7 +64,7 @@ const readCheckBox = function(book, readState) {
     book.appendChild(div);
 }
 //delete from library
-const deleteBtn = function(index) {
+const deleteBtn = function(book, index) {
     let btn = document.createElement("button");
     btn.setAttribute("id", index);
     btn.textContent = "X";
@@ -73,7 +73,7 @@ const deleteBtn = function(index) {
         getFromLibrary();
         console.log(library);
     })
-    books.appendChild(btn);
+    book.appendChild(btn);
 }
 //Get books from library
 const getFromLibrary = function() {
@@ -82,19 +82,17 @@ const getFromLibrary = function() {
         books.removeChild(books.lastChild);
     }
     if (library.length === 0) {
-        let div = document.createElement("div");
-        div.textContent = "There is no books to show";
-        books.appendChild(div);
+        newElement(books, "div", "The is no books to show");
     } else {
         library.forEach((bookObject, index) => {
             //get bookobject info
             [title, author, pages, readState] = bookObject.info();
             //display books
             book = newBook();
-            deleteBtn(index);
+            deleteBtn(book, index);
             newElement(book, "div", title);
-            newElement(book, "div", author);
-            newElement(book, "div", pages);
+            newElement(book, "div", "by "+author);
+            newElement(book, "div", pages+" pages");
             readCheckBox(book, readState);
         })
     }   
