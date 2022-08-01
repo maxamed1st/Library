@@ -17,6 +17,10 @@ const bookObject = function(title, author, pages){
     this.info = () => {
         return [this.title, this.author, this.pages, this.readState]
     }
+    //toggle read state;
+    this.toggleReadState = () => {
+        this.readState = !this.readState;
+    }
 }
 //add new bookObject to library
 const addNewBook = function(bookObject) {
@@ -52,7 +56,7 @@ const newElement = function(book, tagname, content) {
     return book;
 }
 //create checkbox for readingstate
-const readCheckBox = function(book, readState) {
+const readCheckBox = function(book, readState, index) {
     let div = document.createElement("div");
     let input = document.createElement("input");
     div.innerText = "Read";
@@ -60,6 +64,12 @@ const readCheckBox = function(book, readState) {
     if (readState) {
         input.checked = true;
     }
+    input.addEventListener("click", () => {
+        library[index].toggleReadState();
+        checked = library[index].readState;
+        toggleBookBg(book, checked);
+
+    })
     div.appendChild(input);
     book.appendChild(div);
 }
@@ -93,7 +103,15 @@ const getFromLibrary = function() {
             newElement(book, "div", title);
             newElement(book, "div", "by "+author);
             newElement(book, "div", pages+" pages");
-            readCheckBox(book, readState);
+            readCheckBox(book, readState, index);
         })
     }   
+}
+const toggleBookBg = function(book, checked) {
+    console.log(checked, book);
+    if(checked) {
+        book.style.backgroundColor = "rgb(214, 214, 214)";
+    } else {
+        book.style.backgroundColor = "rgb(255, 170, 0)";
+    }
 }
