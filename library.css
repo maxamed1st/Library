@@ -7,10 +7,19 @@ root {
 body {
     background-color: rgb(186, 114, 29);
 }
+header {
+    display: grid;
+    place-items: center;
+    color:rgb(214, 214, 214);
+}
+header img {
+    width: 150px;
+    height: 120px;
+}
 main {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    height: 100vh;
+    gap: 20px;
 }
 #books {
     grid-column: 1;
