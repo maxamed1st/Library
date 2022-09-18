@@ -35,21 +35,23 @@ class Library {
     }
 }
 //create bookobject
-const bookObject = function(title, author, pages){
-    this.title = title,
-    this.author = author,
-    this.pages = pages,
-    this.readState = false,
+class bookObject { 
+    constructor (title, author, pages) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.readState = false;
+    }
     //update read state
-    this.read = () => {
+    read = () => {
         this.readState = true
-    },
+    }
     //return book info
-    this.info = () => {
-        return [this.title, this.author, this.pages, this.readState]
+    static info = () => {
+        return [this.title, this.author, this.pages, this.readState];
     }
     //toggle read state;
-    this.toggleReadState = () => {
+    toggleReadState = () => {
         this.readState = !this.readState;
     }
 }
