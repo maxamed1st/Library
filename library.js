@@ -1,32 +1,115 @@
 let books = document.getElementById("books");
 let form = document.querySelector("form");
 
-//Array for bookObjects
-library = []
+class Library {
+    //Library to hold books and operate on them
+    constructor() {
+        this.bookArray = [];
+    }
+    //add new bookObject to bookArray
+    addNewBook = function(bookObject) {
+    this.bookArray.push(bookObject);
+    }
+    //Get books from library
+    getFromLibrary = function() {
+        let ui = new userInterface();
+        //Empty books container
+        while (books.firstChild) {
+            books.removeChild(books.lastChild);
+        }
+        if (this.bookArray.length === 0) {
+            ui.newElement(books, "There is no books to show");
+        } else {
+            this.bookArray.forEach((bookObject, index) => {
+                //get bookobject info
+                let [title, author, pages, readState] = bookObject.info();
+                //display books
+                let book = ui.newBook();
+                ui.deleteBtn(book, index);
+                ui.newElement(book, title);
+                ui.newElement(book, "by "+author);
+                ui.newElement(book, pages+" pages");
+                ui.readCheckBox(book, readState, index);
+                ui.toggleBookBg(book, readState);
+            })
+        }   
+    }
+}
+const libraryObject = new Library();
 //create bookobject
-const bookObject = function(title, author, pages){
-    this.title = title,
-    this.author = author,
-    this.pages = pages,
-    this.readState = false,
+class bookObject { 
+    constructor (title, author, pages) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.readState = false;
+    }
     //update read state
-    this.read = () => {
+    read = () => {
         this.readState = true
-    },
+    }
     //return book info
-    this.info = () => {
-        return [this.title, this.author, this.pages, this.readState]
+    info = () => {
+        return [this.title, this.author, this.pages, this.readState,];
     }
     //toggle read state;
-    this.toggleReadState = () => {
+    toggleReadState = () => {
         this.readState = !this.readState;
     }
 }
-//add new bookObject to library
-const addNewBook = function(bookObject) {
-    library.push(bookObject);
+class userInterface {
+    //get last item with class books
+    newBook = function() {
+        let book = document.createElement("div");
+        book.setAttribute("class", "book");
+        books.appendChild(book);
+        return book;
 }
-//create new bookObject on submit and update bookArray
+    //create new element and add to books
+    newElement = function(book, content) {
+        let element = document.createElement(`div`);
+        element.textContent = content;
+        book.appendChild(element);
+        return book;
+    }
+    //create checkbox for readingstate
+    readCheckBox = function(book, readState, index) {
+        let div = document.createElement("div");
+        let input = document.createElement("input");
+        div.innerText = "Read";
+        input.setAttribute("type", "checkbox");
+        if (readState) {
+            input.checked = true;
+        }
+        input.addEventListener("click", () => {
+            libraryObject.bookArray[index].toggleReadState();
+            let checked = libraryObject.bookArray[index].readState;
+            this.toggleBookBg(book, checked);
+
+        })
+        div.appendChild(input);
+        book.appendChild(div);
+    }
+        //delete from library
+    deleteBtn = function(book, index) {
+        let btn = document.createElement("button");
+        btn.setAttribute("id", index);
+        btn.textContent = "X";
+        btn.addEventListener("click", () => {
+            libraryObject.bookArray.splice(btn.id, 1);
+            libraryObject.getFromLibrary();
+        })
+        book.appendChild(btn);
+    }
+    toggleBookBg = function(book, checked) {
+        if(checked) {
+            book.style.backgroundColor = "rgb(214, 214, 214)";
+        } else {
+            book.style.backgroundColor = "rgb(255, 170, 0)";
+        }
+    }
+}
+//create new bookObject on submit and update Library
 form.submit.addEventListener("click", (e)=> {
     title = form.title.value;
     author = form.author.value;
@@ -37,80 +120,7 @@ form.submit.addEventListener("click", (e)=> {
     if (form.readStatus.checked) {
         book.read();
     }
-    addNewBook(book);
-    getFromLibrary();
+    libraryObject.addNewBook(book);
+    libraryObject.getFromLibrary();
     e.preventDefault();
 })
-//get last item with class books
-const newBook = function() {
-    let book = document.createElement("div");
-    book.setAttribute("class", "book");
-    books.appendChild(book);
-    return book;
-}
-//create new element and add to books
-const newElement = function(book, tagname, content) {
-    let element = document.createElement(`${tagname}`);
-    element.textContent = content;
-    book.appendChild(element);
-    return book;
-}
-//create checkbox for readingstate
-const readCheckBox = function(book, readState, index) {
-    let div = document.createElement("div");
-    let input = document.createElement("input");
-    div.innerText = "Read";
-    input.setAttribute("type", "checkbox");
-    if (readState) {
-        input.checked = true;
-    }
-    input.addEventListener("click", () => {
-        library[index].toggleReadState();
-        checked = library[index].readState;
-        toggleBookBg(book, checked);
-
-    })
-    div.appendChild(input);
-    book.appendChild(div);
-}
-//delete from library
-const deleteBtn = function(book, index) {
-    let btn = document.createElement("button");
-    btn.setAttribute("id", index);
-    btn.textContent = "X";
-    btn.addEventListener("click", () => {
-        library.splice(btn.id, 1);
-        getFromLibrary();
-    })
-    book.appendChild(btn);
-}
-//Get books from library
-const getFromLibrary = function() {
-    //Empty books container
-    while (books.firstChild) {
-        books.removeChild(books.lastChild);
-    }
-    if (library.length === 0) {
-        newElement(books, "div", "There is no books to show");
-    } else {
-        library.forEach((bookObject, index) => {
-            //get bookobject info
-            [title, author, pages, readState] = bookObject.info();
-            //display books
-            book = newBook();
-            deleteBtn(book, index);
-            newElement(book, "div", title);
-            newElement(book, "div", "by "+author);
-            newElement(book, "div", pages+" pages");
-            readCheckBox(book, readState, index);
-            toggleBookBg(book, readState);
-        })
-    }   
-}
-const toggleBookBg = function(book, checked) {
-    if(checked) {
-        book.style.backgroundColor = "rgb(214, 214, 214)";
-    } else {
-        book.style.backgroundColor = "rgb(255, 170, 0)";
-    }
-}
